@@ -1,4 +1,4 @@
-# bomberman.rb
+# chess.rb
 
 class Chess
 	attr_accessor :window, :board
