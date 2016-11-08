@@ -1,12 +1,31 @@
 # chess.rb
 
 class Chess
-	attr_accessor :window, :board, :player
+	attr_accessor :window, :board, :player, :input, :x, :y, :moving
 	def initialize()
 		@player = :white
+		@x = @y = 3
+		@moving = false
 	end
 	def start
 		@window.show
+	end
+
+	def up
+		@y -= 1 unless @y - 1 < 0 unless @moving
+		@moving = true
+	end
+	def down
+		@y += 1 unless @y + 1 > 7 unless @moving
+		@moving = true
+	end
+	def left
+		@x -= 1 unless @x - 1 < 0 unless @moving
+		@moving = true
+	end
+	def right
+		@x += 1 unless @x + 1 > 7 unless @moving
+		@moving = true
 	end
 end
 
@@ -43,19 +62,11 @@ class Chess::Piece
 		@img.draw @x * 32, (@y * 32) - 5, 1
 	end
 	def hovered?
-		x = $game.window.x
-		y = $game.window.y
-		return true if x < (@x*32 + 32) && x > @x*32 && y < (@y*32 + 32) && y > @y*32
+		x = $game.x
+		y = $game.y
+		return true if x == @x && y == @y
 	end
-	def select_
-		@selected=true
-		$game.board.piece_selected = self
-	end
-	def deselect
-		@selected=false
-		$game.board.piece_selected = nil
-	end
-	def selected?; @selected;       end
+
 	def dead?
 		@status == :alive ? false : true
 	end
@@ -65,7 +76,6 @@ end
 
 class Chess::Board
 	attr_reader :black, :white
-	attr_accessor :piece_selected
 	def initialize
 		@piece_selected = false
 		@black = @white = []

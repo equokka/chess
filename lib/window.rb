@@ -16,23 +16,27 @@ class Chess::Window < Gosu::Window
 		@selected = IMG("selected.png")
 	end
 	def update
-		self.caption = Chess::DEFAULT_TITLE + " - [FPS: #{Gosu::fps.to_s}]"
+		timeout = 0 if timeout.nil? || timeout >= (Gosu::fps)
+		self.caption = Chess::DEFAULT_TITLE + " - [FPS: #{Gosu::fps.to_s}] [#{$game.x},#{$game.y}] [#{timeout}]"
+		$game.input.queue :up,    Proc.new {$game.up}    if !$game.moving
+		$game.input.queue :down,  Proc.new {$game.down}  if !$game.moving
+		$game.input.queue :left,  Proc.new {$game.left}  if !$game.moving
+		$game.input.queue :right, Proc.new {$game.right} if !$game.moving
 		
-		if Gosu.button_down?(Gosu::MsLeft)
-			$game.board.black.each do |piece|
-				if piece.hovered?
-					if $game.board.piece_selected == nil
-						piece.select_
-					else
-						piece.deselect
-					end
-				end
-			end
+		#FIX THIS 
+		if $game.moving && timeout != Gosu::fps
+			timeout += 1
 		else
-			
+			timeout = 0
+			$game.moving = false
 		end
-	end
+		
 
+		$game.input.update
+	end
+	def caption_update
+
+	end
 	def c_w; @width/2;     end
 	def c_h; @height/2;    end
 	def x;   self.mouse_x; end
@@ -40,14 +44,11 @@ class Chess::Window < Gosu::Window
 
 	def draw
 		@bg.draw 0,0,0
-		@cursor.draw self.x - 9 , self.y + 5, 10
+		#@cursor.draw self.x - 9 , self.y + 5, 10
 		$game.board.draw
 		$game.board.black.each do |piece|
-			if piece.hovered? && !piece.dead? && !piece.selected?
+			if piece.hovered? && !piece.dead?
 				@hovered.draw piece.x * 32, piece.y * 32, 2
-			end
-			if piece.selected?
-				@selected.draw piece.x * 32, piece.y * 32, 2
 			end
 		end
 	end
