@@ -1,9 +1,9 @@
 # chess.rb
 
 class Chess
-	attr_accessor :window, :board
+	attr_accessor :window, :board, :player
 	def initialize()
-
+		@player = :white
 	end
 	def start
 		@window.show

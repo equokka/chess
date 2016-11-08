@@ -1,7 +1,7 @@
 @echo off
 cls
 :start
-ruby main.rb
+ruby chess.rb
 echo.
 echo.
 echo [STOPPED]

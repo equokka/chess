@@ -1,7 +1,4 @@
-#main.rb
-
-# load dependencies
-#require_relative "folder/file"
+# chess.rb
 
 require 'gosu'
 require_relative 'lib/chess'
