@@ -36,16 +36,21 @@ class Chess
 
 	def select_piece(x, y)
 		unless @has_selected
-			@selected_xy = [x, y]
-			@has_selected = true
-			puts "[!] selected piece [#{x},#{y}]"
+			$game.board.pieces.each do |p|
+				if p.x == x && p.y == y
+					break if @has_selected # idk it works
+					@selected_xy = [x, y]
+					@has_selected = true
+					puts "[!] selected piece [#{x},#{y}]"
+				end
+			end
 		end
 	end
 	def deselect
 		if @has_selected
+			puts "[!] deselected piece at [#{@selected_xy[0]},#{@selected_xy[1]}]"
 			@selected_xy = [nil, nil]
 			@has_selected = false
-			puts "[!] deselected piece at [#{x},#{y}]"
 		end
 	end
 end
@@ -135,4 +140,5 @@ class Chess::Board
 		@black.each { |p| p.draw unless p.dead? }
 		@white.each { |p| p.draw unless p.dead? }
 	end
+	def pieces; @black+@white; end
 end

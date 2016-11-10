@@ -8,13 +8,23 @@ class Chess::Window < Gosu::Window
 		@height = h
 		@state = :menu
 		self.caption = Chess::DEFAULT_TITLE
+
+		#debug
 		puts ". width:#{w}, height:#{h}"
 		puts ". [#{$game.x},#{$game.y}]"
+		$game.board.pieces.each do |p|
+			print "[#{p.x},#{p.y}] "
+		end; puts
+
+
 		#img
 		@bg       = IMG("bg.png")
-		@cursor   = IMG("cursor.png")
-		@hovered  = Chess::TILESET[13]
-		@selected = Chess::TILESET[14]
+
+		@path_no  = Chess::TILESET[12]
+		@path_ok  = Chess::TILESET[13]
+		@hovered  = Chess::TILESET[14]
+		@selected = Chess::TILESET[15]
+
 		@t_wait   = TEXT("waiting")
 		@t_play   = TEXT("playing")
 	end
@@ -30,6 +40,7 @@ class Chess::Window < Gosu::Window
 			$game.input.queue :space, Proc.new {$game.select_piece $game.x, $game.y}
 		else
 			$game.input.queue :q,     Proc.new {$game.deselect}
+			puts "#{$game.x - $game.selected_xy[0]}, #{$game.y - $game.selected_xy[1]}"
 		end
 		
 		
@@ -73,6 +84,7 @@ class Chess::Window < Gosu::Window
 
 		if $game.has_selected
 			@selected.draw $game.selected_xy[0]*32, $game.selected_xy[1]*32, 3
+			@path_no.draw $game.x * 32, $game.y * 32, 3 unless $game.x == $game.selected_xy[0] && $game.y == $game.selected_xy[1]
 		end
 	end
 end
