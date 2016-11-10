@@ -1,31 +1,52 @@
 # chess.rb
 
 class Chess
-	attr_accessor :window, :board, :player, :input, :x, :y, :moving
+	attr_accessor :window, :board, :player, :input, :x, :y, :moving, :has_selected
+	attr_reader :selected_xy
 	def initialize()
 		@player = :white
 		@x = @y = 3
 		@moving = false
+		@has_selected = false
+		@selected_xy = [nil,nil]
 	end
 	def start
 		@window.show
 	end
-
+	def stop
+		puts "[!] game stopped via Escape key"
+		exit
+	end
 	def up
 		@y -= 1 unless @y - 1 < 0 unless @moving
-		@moving = true
+		@moving = true unless @y - 1 < 0
 	end
 	def down
 		@y += 1 unless @y + 1 > 7 unless @moving
-		@moving = true
+		@moving = true unless @y + 1 > 7
 	end
 	def left
 		@x -= 1 unless @x - 1 < 0 unless @moving
-		@moving = true
+		@moving = true unless @x - 1 < 0
 	end
 	def right
 		@x += 1 unless @x + 1 > 7 unless @moving
-		@moving = true
+		@moving = true unless @x + 1 > 7
+	end
+
+	def select_piece(x, y)
+		unless @has_selected
+			@selected_xy = [x, y]
+			@has_selected = true
+			puts "[!] selected piece [#{x},#{y}]"
+		end
+	end
+	def deselect
+		if @has_selected
+			@selected_xy = [nil, nil]
+			@has_selected = false
+			puts "[!] deselected piece at [#{x},#{y}]"
+		end
 	end
 end
 
@@ -38,28 +59,30 @@ class Chess::Piece
 		@selected = false
 		@x=x
 		@y=y
-		#gross
+
 		case type
 		when :pawn
-			c == :black ? @img = Chess::CHESSPIECES[0] : @img = Chess::CHESSPIECES[6]
+			c == :black ? @img = Chess::TILESET[0] : @img = Chess::TILESET[6]
 		when :rook
-			c == :black ? @img = Chess::CHESSPIECES[1] : @img = Chess::CHESSPIECES[7]
+			c == :black ? @img = Chess::TILESET[1] : @img = Chess::TILESET[7]
 		when :knight
-			c == :black ? @img = Chess::CHESSPIECES[2] : @img = Chess::CHESSPIECES[8]
+			c == :black ? @img = Chess::TILESET[2] : @img = Chess::TILESET[8]
 		when :bishop
-			c == :black ? @img = Chess::CHESSPIECES[3] : @img = Chess::CHESSPIECES[9]
+			c == :black ? @img = Chess::TILESET[3] : @img = Chess::TILESET[9]
 		when :king
-			c == :black ? @img = Chess::CHESSPIECES[4] : @img = Chess::CHESSPIECES[10]
+			c == :black ? @img = Chess::TILESET[4] : @img = Chess::TILESET[10]
 		when :queen
-			c == :black ? @img = Chess::CHESSPIECES[5] : @img = Chess::CHESSPIECES[11]
+			c == :black ? @img = Chess::TILESET[5] : @img = Chess::TILESET[11]
 		end
 	end
 	def move(x,y)
-
+		raise "ERROR: tried to move out of bounds (from #{@x},#{@y}) (vector #{x},#{y})" if @x + x > 7 || @x + x < 0 || @y + y > 7 || @y + y < 0
+		@x += x
+		@y += y
 	end
 	def draw
 		#5 pixel offset (up)
-		@img.draw @x * 32, (@y * 32) - 5, 1
+		@img.draw @x * 32, (@y * 32) - 5, 2
 	end
 	def hovered?
 		x = $game.x
@@ -70,8 +93,10 @@ class Chess::Piece
 	def dead?
 		@status == :alive ? false : true
 	end
-	def kill; @status = :dead; end
-	#def selected?; @selected; end
+	def kill
+		@status = :dead
+		@x = @y = -1 #can't select it now can you hacker fucker
+	end
 end
 
 class Chess::Board
@@ -107,18 +132,7 @@ class Chess::Board
 
 	end
 	def draw
-		@black.each { |piece| piece.draw unless piece.dead? }
-		@white.each { |piece| piece.draw unless piece.dead? }
+		@black.each { |p| p.draw unless p.dead? }
+		@white.each { |p| p.draw unless p.dead? }
 	end
-end
-
-def IMG(file)
-	Gosu::Image.new("./media/#{file}")
-end
-def TILES(file, w = 32, h = 32)
-	h = w if !w.nil?
-	Gosu::Image.load_tiles("./media/#{file}", w, h)
-end
-def TEXT(str, ht = 40) #add font later
-	Gosu::Image.from_text(str, ht)
 end
