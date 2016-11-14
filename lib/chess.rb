@@ -57,14 +57,12 @@ end
 
 class Chess::Piece
 	attr_accessor :type
-	attr_reader :x, :y
-	def initialize(type, c, x, y)
+	attr_reader :color
+	def initialize(type, c)
 		@type = type
 		@status = :alive
 		@selected = false
-		@x=x
-		@y=y
-
+		@color = c
 		case type
 		when :pawn
 			c == :black ? @img = Chess::TILESET[0] : @img = Chess::TILESET[6]
@@ -80,6 +78,7 @@ class Chess::Piece
 			c == :black ? @img = Chess::TILESET[5] : @img = Chess::TILESET[11]
 		end
 	end
+
 	def move(x,y)
 		raise "ERROR: tried to move out of bounds (from #{@x},#{@y}) (vector #{x},#{y})" if @x + x > 7 || @x + x < 0 || @y + y > 7 || @y + y < 0
 		@x += x
@@ -105,40 +104,49 @@ class Chess::Piece
 end
 
 class Chess::Board
-	attr_reader :black, :white
+	attr_reader :black, :white, :grid
 	def initialize
 		@piece_selected = false
-		@black = @white = []
-		8.times do |i|
-			@black << Chess::Piece.new(:pawn, :black, i, 1)
-			@white << Chess::Piece.new(:pawn, :white, i, 6)
-		end
-		#rooks
-		@black << Chess::Piece.new(:rook, :black, 0,0)
-		@black << Chess::Piece.new(:rook, :black, 7,0)
-		@white << Chess::Piece.new(:rook, :white, 0,7)
-		@white << Chess::Piece.new(:rook, :white, 7,7)
-		#hors- i mean knights
-		@black << Chess::Piece.new(:knight, :black, 1,0)
-		@black << Chess::Piece.new(:knight, :black, 6,0)
-		@white << Chess::Piece.new(:knight, :white, 1,7)
-		@white << Chess::Piece.new(:knight, :white, 6,7)
-		#BISHOPS
-		@black << Chess::Piece.new(:bishop, :black, 2,0)
-		@black << Chess::Piece.new(:bishop, :black, 5,0)
-		@white << Chess::Piece.new(:bishop, :white, 2,7)
-		@white << Chess::Piece.new(:bishop, :white, 5,7)
-		#queen
-		@black << Chess::Piece.new(:queen, :black, 3,0)
-		@white << Chess::Piece.new(:queen, :white, 3,7)
-		#king
-		@black << Chess::Piece.new(:king, :black, 4,0)
-		@white << Chess::Piece.new(:king, :white, 4,7)
 
+		# grid is [y (0-7)][x (0-7)] => chess class object
+		@grid = {}
+		8.times do |row|
+			grid[row] = {}
+			8.times do |collumn|
+				grid[row][collumn] = nil
+			end
+		end
+
+		@grid.each do |y, row|
+			row.each_key do |x|
+				if y == 1
+					@grid[y][x] = Chess::Piece.new(:pawn, :black)
+				elsif y == 6
+					@grid[y][x] = Chess::Piece.new(:pawn, :white)
+
+				elsif y == 0 || y == 7
+					y == 7 ? c = :white : c = :black #define color in this iteration
+					if x == 0 || x == 7
+						@grid[y][x] = Chess::Piece.new(:rook, c)
+					elsif x == 1 || x == 6
+						@grid[y][x] = Chess::Piece.new(:knight, c)
+					elsif x == 2 || x == 5
+						@grid[y][x] = Chess::Piece.new(:bishop, c)
+					elsif x == 3
+						@grid[y][x] = Chess::Piece.new(:queen, c)
+					elsif x == 4
+						@grid[y][x] = Chess::Piece.new(:king, c)
+					end
+				end
+			end
+		end
 	end
+
 	def draw
-		@black.each { |p| p.draw unless p.dead? }
-		@white.each { |p| p.draw unless p.dead? }
+		@grid.each do |y, row|
+			row.each_key do |x|
+				@grid[y][x].draw unless @grid[y][x].dead? || @grid[y][x].nil?
+			end
+		end
 	end
-	def pieces; @black+@white; end
 end

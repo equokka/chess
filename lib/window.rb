@@ -10,12 +10,13 @@ class Chess::Window < Gosu::Window
 		self.caption = Chess::DEFAULT_TITLE
 
 		#debug
+=begin
 		puts ". width:#{w}, height:#{h}"
 		puts ". [#{$game.x},#{$game.y}]"
 		$game.board.pieces.each do |p|
 			print "[#{p.x},#{p.y}] "
 		end; puts
-
+=end
 
 		#img
 		@bg       = IMG("bg.png")
@@ -41,6 +42,13 @@ class Chess::Window < Gosu::Window
 		else
 			$game.input.queue :q,     Proc.new {$game.deselect}
 			puts "#{$game.x - $game.selected_xy[0]}, #{$game.y - $game.selected_xy[1]}"
+=begin
+			case $game.player
+			when :black
+				$game.input.queue :space, Proc.new {$game.board.}
+			when :white
+				$game.input.queue :space, Proc.new {$game.board.}
+=end
 		end
 		
 		
