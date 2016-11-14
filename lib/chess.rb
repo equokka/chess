@@ -33,7 +33,17 @@ class Chess
 		@x += 1 unless @x + 1 > 7 unless @moving
 		@moving = true unless @x + 1 > 7
 	end
-
+	def get_piece(_x, _y)
+		$game.board.grid[_y][_x]
+	end
+	def find_xy(piece_obj)
+		$game.board.grid.each do |y, row|
+			row.each do |x, collumn|
+				return [x, y] if $game.board.grid[y][x] == piece_obj
+			end
+		end
+		#raise "COULD NOT FIND XY COORDINATES FOR #{piece_obj}"
+	end
 	def select_piece(x, y)
 		unless @has_selected
 			$game.board.pieces.each do |p|
@@ -86,7 +96,8 @@ class Chess::Piece
 	end
 	def draw
 		#5 pixel offset (up)
-		@img.draw @x * 32, (@y * 32) - 5, 2
+		coord = $game.find_xy self
+		@img.draw coord[0] * 32, (coord[1] * 32) - 5, 2
 	end
 	def hovered?
 		x = $game.x
@@ -145,7 +156,7 @@ class Chess::Board
 	def draw
 		@grid.each do |y, row|
 			row.each_key do |x|
-				@grid[y][x].draw unless @grid[y][x].dead? || @grid[y][x].nil?
+				@grid[y][x].draw unless @grid[y][x].nil? || @grid[y][x].dead?
 			end
 		end
 	end
