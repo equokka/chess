@@ -38,20 +38,31 @@ class Chess
 	end
 	def find_xy(piece_obj)
 		$game.board.grid.each do |y, row|
-			row.each do |x, collumn|
+			row.each_key do |x|
 				return [x, y] if $game.board.grid[y][x] == piece_obj
 			end
 		end
 		#raise "COULD NOT FIND XY COORDINATES FOR #{piece_obj}"
 	end
-	def select_piece(x, y)
+	def move_piece(_x, _y) #assumes there's a piece selected
+		raise "ERROR: called Chess#move_piece with @selected_xy == nil" if @selected_xy.nil?
+		unless [_x, _y] == $game.selected_xy || !$game.board.grid[_y][_x].nil?
+			puts "aaa"
+			$game.board.grid[_y][_x] = $game.get_piece $game.x, $game.y
+			$game.board.grid[$game.y][$game.x] = nil
+		end
+	end
+	def select_piece(_x, _y)
 		unless @has_selected
-			$game.board.pieces.each do |p|
-				if p.x == x && p.y == y
-					break if @has_selected # idk it works
-					@selected_xy = [x, y]
-					@has_selected = true
-					puts "[!] selected piece [#{x},#{y}]"
+			$game.board.grid.each do |y, row|
+				row.each do |x, item|
+					if _x == x && _y == y && !$game.board.grid[y][x].nil?
+						break if @has_selected # idk it works
+						@selected_xy = [x, y]
+						@has_selected = true
+						puts "[!] selected piece [#{x},#{y}]"
+						@moving = true
+					end
 				end
 			end
 		end

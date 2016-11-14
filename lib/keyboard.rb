@@ -22,6 +22,6 @@ class Chess::Input
 
 	def queue(key, event)
 		raise "tried to call Chess::Input#queue with something other than a Proc" unless event.is_a?(Proc) || event.nil?
-		@events[key] << event unless @events[key].nil?
+		@events[key] << event unless @events[key].nil? || $game.moving
 	end
 end

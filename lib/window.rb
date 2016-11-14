@@ -33,22 +33,15 @@ class Chess::Window < Gosu::Window
 		@timeout = 0 if @timeout.nil?
 		self.caption = Chess::DEFAULT_TITLE + " - [FPS: #{Gosu::fps.to_s}] [#{$game.x},#{$game.y}] [#{Chess::DEFAULT_DELAY - @timeout}] [#{$game.selected_xy[0]},#{$game.selected_xy[1]}]"
 		
-		$game.input.queue :up,    Proc.new {$game.up}    if !$game.moving
-		$game.input.queue :down,  Proc.new {$game.down}  if !$game.moving
-		$game.input.queue :left,  Proc.new {$game.left}  if !$game.moving
-		$game.input.queue :right, Proc.new {$game.right} if !$game.moving
+		$game.input.queue :up,    Proc.new {$game.up}
+		$game.input.queue :down,  Proc.new {$game.down}
+		$game.input.queue :left,  Proc.new {$game.left}
+		$game.input.queue :right, Proc.new {$game.right}
 		unless $game.has_selected
 			$game.input.queue :space, Proc.new {$game.select_piece $game.x, $game.y}
 		else
 			$game.input.queue :q,     Proc.new {$game.deselect}
-			puts "#{$game.x - $game.selected_xy[0]}, #{$game.y - $game.selected_xy[1]}"
-=begin
-			case $game.player
-			when :black
-				$game.input.queue :space, Proc.new {$game.board.}
-			when :white
-				$game.input.queue :space, Proc.new {$game.board.}
-=end
+			$game.input.queue :space, Proc.new {$game.move_piece $game.x, $game.y}
 		end
 		
 		
