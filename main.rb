@@ -11,4 +11,6 @@ $game.board = Chess::Board.new
 $game.window = Chess::Window.new
 $game.input = Chess::Input.new
 
+DEBUG()
+
 $game.start

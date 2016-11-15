@@ -17,6 +17,9 @@ class Chess
 		puts "[!] game stopped via Escape key"
 		exit
 	end
+	def end_turn
+		@player == :white ? @player = :black : @player = :white
+	end
 	def up
 		@y -= 1 unless @y - 1 < 0 unless @moving
 		@moving = true unless @y - 1 < 0
@@ -45,11 +48,13 @@ class Chess
 		#raise "COULD NOT FIND XY COORDINATES FOR #{piece_obj}"
 	end
 	def move_piece(_x, _y) #assumes there's a piece selected
-		raise "ERROR: called Chess#move_piece with @selected_xy == nil" if @selected_xy.nil?
+		return nil if @selected_xy.nil? || @selected_xy.empty?
+		#raise "ERROR: tried to move out of bounds (from #{@selected_xy[0]},#{@selected_xy[1]}) (vector #{_x},#{_y})" if @selected_xy[0] + _x > 7 || @selected_xy[0] + _x < 0 || @selected_xy[1] + _y > 7 || @selected_xy[1] + _y < 0
 		unless [_x, _y] == $game.selected_xy || !$game.board.grid[_y][_x].nil?
-			puts "aaa"
-			$game.board.grid[_y][_x] = $game.get_piece $game.x, $game.y
-			$game.board.grid[$game.y][$game.x] = nil
+			$game.board.grid[_y][_x] = $game.get_piece @selected_xy[0], @selected_xy[1]
+			$game.board.grid[@selected_xy[1]][@selected_xy[0]] = nil
+			deselect
+			end_turn
 		end
 	end
 	def select_piece(_x, _y)
@@ -57,11 +62,13 @@ class Chess
 			$game.board.grid.each do |y, row|
 				row.each do |x, item|
 					if _x == x && _y == y && !$game.board.grid[y][x].nil?
-						break if @has_selected # idk it works
-						@selected_xy = [x, y]
-						@has_selected = true
-						puts "[!] selected piece [#{x},#{y}]"
-						@moving = true
+						if $game.board.grid[y][x].color == @player
+							break if @has_selected # idk it works
+							@selected_xy = [x, y]
+							@has_selected = true
+							puts "[!] selected piece [#{x},#{y}]"
+							@moving = true
+						end
 					end
 				end
 			end
@@ -99,12 +106,6 @@ class Chess::Piece
 			c == :black ? @img = Chess::TILESET[5] : @img = Chess::TILESET[11]
 		end
 	end
-
-	def move(x,y)
-		raise "ERROR: tried to move out of bounds (from #{@x},#{@y}) (vector #{x},#{y})" if @x + x > 7 || @x + x < 0 || @y + y > 7 || @y + y < 0
-		@x += x
-		@y += y
-	end
 	def draw
 		#5 pixel offset (up)
 		coord = $game.find_xy self
@@ -121,7 +122,11 @@ class Chess::Piece
 	end
 	def kill
 		@status = :dead
-		@x = @y = -1 #can't select it now can you hacker fucker
+		# TODO remove from grid
+	end
+
+	def to_s #why does this not work
+		"#{@color[0,1]}:#{@type}"
 	end
 end
 
@@ -130,7 +135,7 @@ class Chess::Board
 	def initialize
 		@piece_selected = false
 
-		# grid is [y (0-7)][x (0-7)] => chess class object
+		# grid is [y (0-7)][x (0-7)] => chesspiece class object
 		@grid = {}
 		8.times do |row|
 			grid[row] = {}

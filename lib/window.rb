@@ -37,9 +37,9 @@ class Chess::Window < Gosu::Window
 		$game.input.queue :down,  Proc.new {$game.down}
 		$game.input.queue :left,  Proc.new {$game.left}
 		$game.input.queue :right, Proc.new {$game.right}
-		unless $game.has_selected
+		if !$game.has_selected
 			$game.input.queue :space, Proc.new {$game.select_piece $game.x, $game.y}
-		else
+		elsif $game.has_selected
 			$game.input.queue :q,     Proc.new {$game.deselect}
 			$game.input.queue :space, Proc.new {$game.move_piece $game.x, $game.y}
 		end
@@ -60,6 +60,11 @@ class Chess::Window < Gosu::Window
 			$game.moving = false
 		end
 		
+		$game.input.queue :e, Proc.new {
+			$game.board.grid[$game.y][$game.x] = nil
+			DEBUG()
+		}
+
 
 		$game.input.update
 	end
