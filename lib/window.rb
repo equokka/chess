@@ -9,25 +9,18 @@ class Chess::Window < Gosu::Window
 		@state = :menu
 		self.caption = Chess::DEFAULT_TITLE
 
-		#debug
-=begin
-		puts ". width:#{w}, height:#{h}"
-		puts ". [#{$game.x},#{$game.y}]"
-		$game.board.pieces.each do |p|
-			print "[#{p.x},#{p.y}] "
-		end; puts
-=end
+		puts "\n[STARTED]\nwidth:#{w}, height:#{h}"
 
 		#img
-		@bg       = IMG("bg.png")
-
-		@path_no  = Chess::TILESET[12]
-		@path_ok  = Chess::TILESET[13]
-		@hovered  = Chess::TILESET[14]
-		@selected = Chess::TILESET[15]
-
-		@t_wait   = TEXT("waiting")
-		@t_play   = TEXT("playing")
+		@bg        = IMG("bg.png")
+		@path_no   = Chess::TILESET[12]
+		@path_ok   = Chess::TILESET[13]
+		@hovered   = Chess::TILESET[14]
+		@selected  = Chess::TILESET[15]
+		@t_wait    = TEXT("waiting")
+		@t_play    = TEXT("playing")
+		@t_c_piece = TEXT("#{$game.x};#{$game.y}")
+		@t_turn    = TEXT("Turn #{$game.turn}")
 	end
 	def update
 		@timeout = 0 if @timeout.nil?
@@ -43,29 +36,26 @@ class Chess::Window < Gosu::Window
 			$game.input.queue :q,     Proc.new {$game.deselect}
 			$game.input.queue :space, Proc.new {$game.move_piece $game.x, $game.y}
 		end
-		
-		
 
-		$game.input.queue :esc,   Proc.new {$game.stop}
+		$game.input.queue :esc, Proc.new {puts "[!] game stopped via Escape key";$game.stop}
 
-		#$game.input.queue :space, Proc.new {$game.player = :black; $game.moving = true} if $game.player == :white && !$game.moving
-		#$game.input.queue :space, Proc.new {$game.player = :white; $game.moving = true} if $game.player == :black && !$game.moving
-		
-		#FIX THIS 
 		if $game.moving
 			@timeout += 1 unless @timeout == Chess::DEFAULT_DELAY
 		end
+
 		if @timeout == Chess::DEFAULT_DELAY
 			@timeout = 0
 			$game.moving = false
 		end
 		
 		$game.input.queue :e, Proc.new {
-			$game.board.grid[$game.y][$game.x] = nil
-			DEBUG()
+			DEBUG() unless $game.moving
+			$game.moving = true
 		}
 
-
+		#do things here
+		@t_c_piece = TEXT("#{$game.x};#{$game.y}")
+		@t_turn    = TEXT("Turn #{$game.turn}")
 		$game.input.update
 	end
 
@@ -79,11 +69,15 @@ class Chess::Window < Gosu::Window
 		#@cursor.draw self.x - 9 , self.y + 5, 10
 		$game.board.draw
 		@hovered.draw $game.x * 32, $game.y * 32, 3
+
+		@t_c_piece.draw 8*32 + 5, 3*32, 4
+		@t_turn.draw 8*32 + 5, 4*32, 4
+
 		case $game.player
-		when :black
+		when :white
 			@t_wait.draw 8*32 + 5, 0, 4
 			@t_play.draw 8*32 + 5, 7*32, 4
-		when :white
+		when :black
 			@t_wait.draw 8*32 + 5, 7*32, 4
 			@t_play.draw 8*32 + 5, 0, 4
 		end

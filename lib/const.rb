@@ -14,6 +14,7 @@ def TEXT(str, ht = 32) #add font later
 end
 
 def DEBUG
+	puts "\n[-------BOARD-------]"
 	$game.board.grid.each do |y, row|
 		print "#{y} = {"
 		row.each_key do |x|
@@ -22,13 +23,14 @@ def DEBUG
 		end
 		puts "}"
 	end
+	puts
 end
 
 
 
 Chess::DEFAULT_WIDTH  = 256 + 128
 Chess::DEFAULT_HEIGHT = 256
-Chess::DEFAULT_TITLE  = %q{Chess but bad}
+Chess::DEFAULT_TITLE  = %q{CHESS 2}
 Chess::TILESET        = TILES("tileset.png")
 Chess::KEYBOARD       = {
 	:up    => Gosu::KbUp,
