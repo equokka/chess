@@ -13,7 +13,6 @@ class Chess::Board
 				grid[row][collumn] = nil
 			end
 		end
-
 		@grid.each do |y, row|
 			row.each_key do |x|
 				if y == 1
