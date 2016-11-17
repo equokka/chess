@@ -36,7 +36,7 @@ def t_x(x)
 		4 => "e",
 		5 => "f",
 		6 => "g",
-		7 => "h" }[x] 
+		7 => "h" }[x]
 end
 
 Chess::DEFAULT_WIDTH  = 8*32 + 5*32

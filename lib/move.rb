@@ -32,7 +32,7 @@ class Chess
 			when :pawn
 				# decide which way is forward for the pawn based on color
 				$game.board.grid[y_o][x_o].color == :white ? forward = 1 : forward = -1
-				if x_o > _x || x_o < _x # check if we're trying to move diagonally
+				if x_o != _x # check if we're trying to move diagonally
 					# check if you can kill
 					# (i have no clue why it wouldn't work with +forward but whatever)
 					if !$game.board.grid[_y][_x].nil? && $game.board.grid[_y][_x].color == opposite && _y == y_o -forward && (_x == x_o + 1 || _x == x_o - 1)
@@ -57,11 +57,43 @@ class Chess
 					elsif $game.board.grid[_y][_x].pawn_double_step # make sure pawn can't jump 2 cells if it's moved before
 						$game.board.grid[_y][_x].pawn_double_step = false
 					end
-				end
+				end #TODO ADD EN PASSANT
 			when :rook
-				if true
-					
+				possible = true # this variable is used to check if a path is unobstrtucted
+				if x_o == _x && y_o != _y # moving vertically
+					y_o < _y ? path = y_o.._y : _y..y_o
+					path = path.to_a
+					path.slice!(1..path.length - 1)
+					# iterate over every cell between piece and desired destination
+					# excluding the above mentioned
+					path.each do |y|
+						# make moving impossible if we find a single obstacle on the way
+						possible = false unless $game.board.grid[y][x_o].nil?
+					end
+				elsif y_o == _y && x_o != _x # moving horizontally
+					x_o < _x ? path = x_o.._x : _x..x_o
+					path = path.to_a
+					path.slice!(1..path.length - 1)
+					# iterate over every cell between piece and desired destination
+					# excluding the above mentioned
+					path.each do |x|
+						# make moving impossible if we find a single obstacle on the way
+						possible = false unless $game.board.grid[y_o][x].nil?
+					end
 				end
+				# this block runs if the path is clear
+				if possible
+					# check if there's a piece in the destination cell
+					if $game.board.grid[_y][_x].nil? # nothing there
+						do_thing.call
+					else # something there
+						# check if it's an enemy
+						if $game.board.grid[_y][_x].color == opposite
+							$game.board.grid[_y][_x] = nil
+							do_thing.call
+						end
+					end
+				end	#TODO ADD CASTLING
 			when :knight
 				if true
 					
