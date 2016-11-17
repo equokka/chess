@@ -1,7 +1,7 @@
 # piece.rb
 
 class Chess::Piece
-	attr_accessor :type, :pawn_double_step, @rook_
+	attr_accessor :type, :pawn_double_step, :rook_can_do_castling
 	attr_reader :color
 	def initialize(type, c)
 		@type = type
@@ -9,7 +9,7 @@ class Chess::Piece
 		@selected = false
 		@color = c
 		@type == :pawn ? @pawn_double_step = true : @pawn_double_step = false
-		@type == :rook ? @rook_ = true : @rook_ = false
+		@type == :rook ? @rook_can_do_castling = true : @rook_can_do_castling = false
 		update_type
 	end
 	def update_type

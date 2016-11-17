@@ -81,6 +81,12 @@ class Chess
 						possible = false unless $game.board.grid[y_o][x].nil?
 					end
 				end
+				if x_o != _x
+					possible = false if y_o != _y
+				elsif y_o != _y
+					possible = false if x_o != _x
+				end
+
 				# this block runs if the path is clear
 				if possible
 					# check if there's a piece in the destination cell
