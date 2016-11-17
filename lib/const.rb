@@ -26,10 +26,21 @@ def DEBUG
 	puts
 end
 
+# translate x position into file.
+# chess positions are annotated with file,rank, analogous to x,y
+def t_x(x)
+	{   0 => "a",
+		1 => "b",
+		2 => "c",
+		3 => "d",
+		4 => "e",
+		5 => "f",
+		6 => "g",
+		7 => "h" }[x] 
+end
 
-
-Chess::DEFAULT_WIDTH  = 256 + 128
-Chess::DEFAULT_HEIGHT = 256
+Chess::DEFAULT_WIDTH  = 8*32 + 5*32
+Chess::DEFAULT_HEIGHT = 8*32 + 1*32
 Chess::DEFAULT_TITLE  = %q{CHESS 2}
 Chess::TILESET        = TILES("tileset.png")
 Chess::KEYBOARD       = {

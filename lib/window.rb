@@ -19,8 +19,7 @@ class Chess::Window < Gosu::Window
 		@selected  = Chess::TILESET[15]
 		@t_wait    = TEXT("waiting")
 		@t_play    = TEXT("playing")
-		@t_c_piece = TEXT("#{$game.x};#{$game.y}")
-		@t_turn    = TEXT("Turn #{$game.turn}")
+		# @t_c_piece, @t_turn defined in #update
 	end
 	def update
 		@timeout = 0 if @timeout.nil?
@@ -42,7 +41,6 @@ class Chess::Window < Gosu::Window
 		if $game.moving
 			@timeout += 1 unless @timeout == Chess::DEFAULT_DELAY
 		end
-
 		if @timeout == Chess::DEFAULT_DELAY
 			@timeout = 0
 			$game.moving = false
@@ -54,7 +52,7 @@ class Chess::Window < Gosu::Window
 		}
 
 		#do things here
-		@t_c_piece = TEXT("#{$game.x};#{$game.y}")
+		@t_c_piece = TEXT("[#{t_x $game.x}#{$game.y}]")
 		@t_turn    = TEXT("Turn #{$game.turn}")
 		$game.input.update
 	end
@@ -84,7 +82,7 @@ class Chess::Window < Gosu::Window
 
 		if $game.has_selected
 			@selected.draw $game.selected_xy[0]*32, $game.selected_xy[1]*32, 3
-			@path_no.draw $game.x * 32, $game.y * 32, 3 unless $game.x == $game.selected_xy[0] && $game.y == $game.selected_xy[1]
+			@path_ok.draw $game.x * 32, $game.y * 32, 3 unless $game.x == $game.selected_xy[0] && $game.y == $game.selected_xy[1]
 		end
 	end
 end
