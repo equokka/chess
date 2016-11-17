@@ -41,8 +41,7 @@ class Chess
 					end
 				else # we're not moving diagonally
 					if $game.board.grid[y_o][x_o].pawn_double_step # can the pawn jump two cells?
-						if y_o <= _y +forward*2 && x_o == _x # is the pawn moving forward 2 cells?
-							$game.board.grid[y_o][x_o].pawn_double_step = false
+						if (y_o == _y +forward*2 || y_o == _y +forward) && x_o == _x # is the pawn moving forward 2 cells?
 							do_thing.call
 						else # it isn't
 							do_thing.call if y_o == _y +forward && x_o == _x
@@ -52,8 +51,12 @@ class Chess
 					end
 				end
 				# promotion
-				if moved && ((opposite == :black && _y == 0) || (opposite == :white && _y == 7))
-					$game.board.grid[_y][_x].type = :queen #TODO create UI for selecting promoted piece
+				if moved
+					if (opposite == :black && _y == 0) || (opposite == :white && _y == 7)
+						$game.board.grid[_y][_x].type = :queen #TODO create UI for selecting promoted piece
+					elsif $game.board.grid[_y][_x].pawn_double_step # make sure pawn can't jump 2 cells if it's moved before
+						$game.board.grid[_y][_x].pawn_double_step = false
+					end
 				end
 			when :rook
 				if true
