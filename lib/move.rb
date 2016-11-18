@@ -36,18 +36,17 @@ class Chess
 					# check if you can kill
 					# (i have no clue why it wouldn't work with +forward but whatever)
 					if !$game.board.grid[_y][_x].nil? && $game.board.grid[_y][_x].color == opposite && _y == y_o -forward && (_x == x_o + 1 || _x == x_o - 1)
-						$game.board.grid[_y][_x] = nil # kill the other piece before moving+ending turn
 						do_thing.call
 					end
 				else # we're not moving diagonally
 					if $game.board.grid[y_o][x_o].pawn_double_step # can the pawn jump two cells?
 						if (y_o == _y +forward*2 || y_o == _y +forward) && x_o == _x # is the pawn moving forward 2 cells?
-							do_thing.call
+							do_thing.call if $game.board.grid[_y][_x].nil?
 						else # it isn't
-							do_thing.call if y_o == _y +forward && x_o == _x
+							do_thing.call if y_o == _y +forward && x_o == _x && $game.board.grid[_y][_x].nil?
 						end
 					else # pawn can't jump two cells, so we just check if it's moving one cell
-						do_thing.call if y_o == _y +forward && x_o == _x
+						do_thing.call if y_o == _y +forward && x_o == _x && $game.board.grid[_y][_x].nil?
 					end
 				end
 				# promotion
@@ -95,7 +94,6 @@ class Chess
 					else # something there
 						# check if it's an enemy
 						if $game.board.grid[_y][_x].color == opposite
-							$game.board.grid[_y][_x] = nil
 							do_thing.call
 						end
 					end
