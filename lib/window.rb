@@ -52,7 +52,7 @@ class Chess::Window < Gosu::Window
 		end
 		
 		$game.input.queue :e, Proc.new {
-			DEBUG() unless $game.moving
+			print_board unless $game.moving
 			$game.moving = true
 		}
 
