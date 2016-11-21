@@ -13,10 +13,9 @@ class Chess::Window < Gosu::Window
 
 		#img
 		@bg        = IMG("bg.png")
-		@path_no   = Chess::TILESET[12]
-		@path_ok   = Chess::TILESET[13]
-		@hovered   = Chess::TILESET[14]
-		@selected  = Chess::TILESET[15]
+		@path_ok   = Chess::TILESET[12]
+		@hovered   = Chess::TILESET[13]
+		@selected  = Chess::TILESET[14]
 		@t_wait    = TEXT("waiting")
 		@t_play    = TEXT("playing")
 		@b_files   = []
