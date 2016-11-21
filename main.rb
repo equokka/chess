@@ -17,5 +17,6 @@ $game.input = Chess::Input.new
 print_board
 
 $game.board.grid[3][3] = Chess::Piece.new :rook, :white
+$game.board.grid[4][4] = Chess::Piece.new :king, :white
 
 $game.start

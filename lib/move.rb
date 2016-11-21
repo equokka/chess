@@ -11,10 +11,10 @@ class Chess
 		return nil if $game.board.grid[y_o][x_o].nil?
 		#raise "ERROR: tried to move out of bounds (from #{@selected_xy[0]},#{@selected_xy[1]}) (vector #{_x},#{_y})" if @selected_xy[0] + _x > 7 || @selected_xy[0] + _x < 0 || @selected_xy[1] + _y > 7 || @selected_xy[1] + _y < 0
 		do_thing = Proc.new {
+			puts "[!] #{$game.board.grid[y_o][x_o].color} #{$game.board.grid[y_o][x_o].type} #{t_x x_o}#{y_o+1} => #{t_x _x}#{_y+1}"
 			moved = true
 			$game.board.grid[_y][_x] = $game.get_piece x_o, y_o
 			$game.board.grid[y_o][x_o] = nil
-			puts "[!] moved to [#{@x},#{@y}]"
 			deselect
 			end_turn
 		}
@@ -111,8 +111,12 @@ class Chess
 					
 				end
 			when :king
-				if true
-					
+				# check if we're moving horizontally or vertically
+				if ((x_o == _x + 1 || x_o == _x - 1) && y_o == _y) || ((y_o == _y + 1 || y_o == _y - 1) && x_o == _x)
+					do_thing.call
+				# check if we're instead moving diagonally
+				elsif true 
+
 				end
 			end
 		end

@@ -53,7 +53,6 @@ class Chess
 							break if @has_selected # idk it works
 							@selected_xy = [x, y]
 							@has_selected = true
-							puts "[!] selected piece #{$game.board.grid[y][x]} at [#{x},#{y}]"
 							@moving = true
 						end
 					end

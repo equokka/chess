@@ -43,9 +43,7 @@ class Chess::Window < Gosu::Window
 
 		$game.input.queue :esc, Proc.new {puts "[!] game stopped via Escape key";$game.stop}
 
-		if $game.moving
-			@timeout += 1 unless @timeout == Chess::DEFAULT_DELAY
-		end
+		@timeout += 1 unless @timeout == Chess::DEFAULT_DELAY if $game.moving
 		if @timeout == Chess::DEFAULT_DELAY
 			@timeout = 0
 			$game.moving = false
