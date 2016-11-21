@@ -32,7 +32,7 @@ class Chess::Piece
 		update_type
 		#5 pixel offset (up)
 		coord = $game.find_xy self
-		@img.draw coord[0] * 32, (coord[1] * 32) - 5, 2
+		@img.draw coord[0] * 32 + Chess::DRAW_OFFSET[0], ((coord[1] * 32) - 5) + Chess::DRAW_OFFSET[1], 2
 	end
 	def hovered?
 		x = $game.x
@@ -40,6 +40,20 @@ class Chess::Piece
 		return true if x == @x && y == @y
 	end
 	def to_s
-		"#{@color[0,1]}:#{@type}"
+		case @type
+		when :pawn
+			type = "(-" + @type.to_s + "-)" 
+		when :rook
+			type = "(-" + @type.to_s + "-)" 
+		when :knight
+			type = "(" + @type.to_s + ")" 
+		when :bishop
+			type = "(" + @type.to_s + ")" 
+		when :king
+			type = "(-" + @type.to_s + "-)" 
+		when :queen
+			type = "(-" + @type.to_s + ")" 
+		end
+		"#{@color[0,1].upcase}:#{type}"
 	end
 end

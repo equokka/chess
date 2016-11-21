@@ -13,13 +13,14 @@ def TEXT(str, ht = 32) #add font later
 	Gosu::Image.from_text(str, ht)
 end
 
-def DEBUG
-	puts "\n[-------BOARD-------]"
+def print_board
+	puts "\n[--------------------------------------------CHESSBOARD--------------------------------------------]"
 	$game.board.grid.each do |y, row|
 		print "#{y} = {"
 		row.each_key do |x|
 			print ", " if x>0
-			print "#{$game.board.grid[y][x]}"
+			print "0:(______)" if $game.board.grid[y][x].nil?
+			print "#{$game.board.grid[y][x]}" unless $game.board.grid[y][x].nil?
 		end
 		puts "}"
 	end
@@ -39,9 +40,10 @@ def t_x(x)
 		7 => "h" }[x]
 end
 
-Chess::DEFAULT_WIDTH  = 8*32 + 5*32
+Chess::DEFAULT_WIDTH  = 1*32 + 8*32 + 5*32
 Chess::DEFAULT_HEIGHT = 8*32 + 1*32
 Chess::DEFAULT_TITLE  = %q{CHESS 2}
+Chess::DRAW_OFFSET    = [32, 0]
 Chess::TILESET        = TILES("tileset.png")
 Chess::KEYBOARD       = {
 	:up    => Gosu::KbUp,

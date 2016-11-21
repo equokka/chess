@@ -14,6 +14,8 @@ $game.board = Chess::Board.new
 $game.window = Chess::Window.new
 $game.input = Chess::Input.new
 
-DEBUG()
+print_board
+
 $game.board.grid[3][3] = Chess::Piece.new :rook, :white
+
 $game.start
