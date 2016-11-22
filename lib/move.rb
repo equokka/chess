@@ -115,8 +115,8 @@ class Chess
 				if ((x_o == _x + 1 || x_o == _x - 1) && y_o == _y) || ((y_o == _y + 1 || y_o == _y - 1) && x_o == _x)
 					do_thing.call
 				# check if we're instead moving diagonally
-				elsif true 
-
+				elsif (x_o == _x + 1 && y_o == _y + 1) || (x_o == _x - 1 && y_o == _y + 1) || (x_o == _x + 1 && y_o == _y - 1) || (x_o == _x - 1 && y_o == _y - 1)
+					do_thing.call
 				end
 			end
 		end
