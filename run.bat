@@ -1,9 +1,8 @@
 @echo off
 cls
 :start
+echo [STARTED]
 ruby main.rb
-echo.
-echo.
 echo [STOPPED]
 pause>nul
 goto start

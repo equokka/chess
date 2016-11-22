@@ -9,8 +9,6 @@ class Chess::Window < Gosu::Window
 		@state = :menu
 		self.caption = Chess::DEFAULT_TITLE
 
-		puts "\n[STARTED]\nwidth:#{w}, height:#{h}"
-
 		#img
 		@bg        = IMG("bg.png")
 		@path_ok   = Chess::TILESET[12]

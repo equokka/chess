@@ -14,21 +14,21 @@ def TEXT(str, ht = 32) #add font later
 end
 
 def print_board
-	puts "\n  [------------------------------------------CHESSBOARD--------------------------------------------]"
+	puts "\n   /#{"-"*103}\\"
 	$game.board.grid.each do |y, row|
-		print "#{y+1} | "
+		print " #{y+1} | "
 		row.each_key do |x|
-			print ", " if x>0
+			print " | " if x>0
 			print "0:(______)" if $game.board.grid[y][x].nil?
 			print "#{$game.board.grid[y][x]}" unless $game.board.grid[y][x].nil?
 		end
 		puts " |"
 	end
-	puts "  \\------------------------------------------------------------------------------------------------/"
-	print "    "
-	8.times { |i| print "[---#{(t_x i)*2}---]  " }
+	print "   \\#{"-"*103}/\n     "
+	8.times { |i| print "[---#{(t_x i)*2}---]   " }
 	puts
 end
+
 
 # translate x position into file.
 # chess positions are annotated with file,rank, analogous to x,y
