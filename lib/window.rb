@@ -34,7 +34,7 @@ class Chess::Window < Gosu::Window
 		$game.input.queue :right, Proc.new {$game.right}
 		if !$game.has_selected
 			$game.input.queue :space, Proc.new {$game.select_piece $game.x, $game.y}
-		elsif $game.has_selected
+		elsif $game.has_selected && !$game.moving
 			$game.input.queue :q,     Proc.new {$game.deselect}
 			$game.input.queue :space, Proc.new {$game.move_piece $game.x, $game.y}
 		end
