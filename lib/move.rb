@@ -111,6 +111,7 @@ class Chess
 					
 				end
 			when :king
+				# TODO check if the destination will not place the king in check
 				# check if we're moving horizontally or vertically
 				if ((x_o == _x + 1 || x_o == _x - 1) && y_o == _y) || ((y_o == _y + 1 || y_o == _y - 1) && x_o == _x)
 					do_thing.call
