@@ -4,9 +4,7 @@ class Chess::Input
 	attr_reader :events
 	def initialize()
 		@events = {}
-		Chess::KEYBOARD.each do |key|
-			@events[key[0]] = []
-		end
+		Chess::KEYBOARD.each { |key| @events[key[0]] = [] }
 	end
 
 	def update

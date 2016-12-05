@@ -1,7 +1,5 @@
 # const.rb
 
-class Chess;end
-
 def IMG(file)
 	Gosu::Image.new("./media/#{file}")
 end

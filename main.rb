@@ -10,13 +10,7 @@ require_relative 'lib/window'
 require_relative 'lib/keyboard'
 
 $game = Chess.new
-$game.board = Chess::Board.new
-$game.window = Chess::Window.new
-$game.input = Chess::Input.new
 
-print_board
-
-$game.board.grid[3][3] = Chess::Piece.new :rook, :white
-$game.board.grid[4][4] = Chess::Piece.new :king, :white
+require_relative 'debug'
 
 $game.start

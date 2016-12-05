@@ -1,9 +1,14 @@
 # chess.rb
 
 class Chess
-	attr_accessor :window, :board, :player, :input, :x, :y, :moving, :has_selected
-	attr_reader :selected_xy, :turn
+	attr_accessor :player, :x, :y, :moving, :has_selected
+	attr_reader :selected_xy, :turn, :board, :window, :input
 	def initialize()
+		@board  = Chess::Board.new
+		@window = Chess::Window.new
+		@input  = Chess::Input.new
+		@board.populate
+		
 		@player = :white
 		@x = @y = 3
 		@moving = false

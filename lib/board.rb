@@ -13,6 +13,19 @@ class Chess::Board
 				grid[row][collumn] = nil
 			end
 		end
+	end
+	# empties the board.
+	def clear
+		puts "[!] Clearing the board."
+		@grid.each do |y, row|
+			row.each_key do |x|
+				@grid[y][x] = nil
+			end
+		end
+	end
+	# creates pieces as they would be in a regular game
+	def populate
+		puts "[!] Populating the board."
 		@grid.each do |y, row|
 			row.each_key do |x|
 				if y == 1
@@ -37,7 +50,6 @@ class Chess::Board
 			end
 		end
 	end
-
 	def draw
 		@grid.each do |y, row|
 			row.each_key do |x|
