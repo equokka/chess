@@ -22,7 +22,7 @@ class Chess
 		puts
 		puts "[!] RESETTING BOARD"
 		@turn = 0
-		@playing = :white
+		@player = :white
 		@has_selected = false
 		@selected_xy = [nil,nil]
 		@board.clear
