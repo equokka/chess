@@ -27,7 +27,6 @@ def print_board
 	puts
 end
 
-
 # translate x position into file.
 # chess positions are annotated with file,rank, analogous to x,y
 def t_x(x)
@@ -41,10 +40,13 @@ def t_x(x)
 		7 => "h" }[x]
 end
 
-Chess::DEFAULT_WIDTH  = 1*32 + 8*32 + 5*32
-Chess::DEFAULT_HEIGHT = 8*32 + 1*32
+Chess::DEFAULT_WIDTH  = 12*32 + 4*32
+Chess::DEFAULT_HEIGHT = 9*32  + 4*32
 Chess::DEFAULT_TITLE  = %q{CHESS 2}
-Chess::DRAW_OFFSET    = [32, 0]
+Chess::DRAW_OFFSET    = [ # minimum 32,0
+	2*32, # X
+	1*32  # Y
+]
 Chess::TILESET        = TILES("tileset.png")
 Chess::KEYBOARD       = {
 	:up    => Gosu::KbUp,

@@ -90,7 +90,7 @@ class Chess::Window < Gosu::Window
 
 		8.times do |i|
 			@b_files[i].draw i*32 + d_x + 8, 8*32 - 2 + d_y, 0
-			@b_ranks[i].draw 0 + 8,          i*32 + d_y,     0
+			@b_ranks[i].draw 8 + d_x - 1*32,    i*32 + d_y,     0
 		end
 	end
 end
