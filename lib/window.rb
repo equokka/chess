@@ -47,6 +47,10 @@ class Chess::Window < Gosu::Window
 			$game.moving = false
 		end
 		
+		$game.input.queue :f, Proc.new {
+			$game.reset unless $game.moving
+			$game.moving = true
+		}
 		$game.input.queue :e, Proc.new {
 			print_board unless $game.moving
 			$game.moving = true

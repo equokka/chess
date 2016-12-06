@@ -18,6 +18,16 @@ class Chess
 	end
 	def start;@window.show;end
 	def stop;exit;end
+	def reset
+		puts
+		puts "[!] RESETTING BOARD"
+		@turn = 0
+		@playing = :white
+		@has_selected = false
+		@selected_xy = [nil,nil]
+		@board.clear
+		@board.populate
+	end
 	def end_turn
 		@player == :white ? @player = :black : @player = :white
 		@turn += 1

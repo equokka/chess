@@ -56,6 +56,7 @@ Chess::KEYBOARD       = {
 	:space => Gosu::KbSpace,
 	:esc   => Gosu::KbEscape,
 	:q     => Gosu::KbQ,
-	:e     => Gosu::KbE
+	:e     => Gosu::KbE,
+	:f     => Gosu::KbF
 }
 Chess::DEFAULT_DELAY = 10
