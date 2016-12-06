@@ -29,7 +29,7 @@ class Chess
 		end
 	end
 	def down
-		unless @y + 1 < 7
+		unless @y + 1 > 7
 			@y += 1 unless @moving
 			@moving = true
 		end
@@ -41,7 +41,7 @@ class Chess
 		end
 	end
 	def right
-		unless @y + 1 < 7
+		unless @x + 1 > 7
 			@x += 1 unless @moving
 			@moving = true
 		end
