@@ -17,7 +17,7 @@ def print_board
 		print " #{y+1} | "
 		row.each_key do |x|
 			print " | " if x>0
-			print "0:(______)" if $game.board.grid[y][x].nil?
+			print "  (      )" if $game.board.grid[y][x].nil?
 			print "#{$game.board.grid[y][x]}" unless $game.board.grid[y][x].nil?
 		end
 		puts " |"

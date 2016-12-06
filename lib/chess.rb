@@ -3,7 +3,7 @@
 class Chess
 	attr_accessor :player, :x, :y, :moving, :has_selected
 	attr_reader :selected_xy, :turn, :board, :window, :input
-	def initialize()
+	def initialize
 		@board  = Chess::Board.new
 		@window = Chess::Window.new
 		@input  = Chess::Input.new
@@ -23,43 +23,46 @@ class Chess
 		@turn += 1
 	end
 	def up
-		@y -= 1 unless @y - 1 < 0 unless @moving
-		@moving = true unless @y - 1 < 0
+		unless @y - 1 < 0
+			@y -= 1 unless @moving
+			@moving = true
+		end
 	end
 	def down
-		@y += 1 unless @y + 1 > 7 unless @moving
-		@moving = true unless @y + 1 > 7
+		unless @y + 1 < 7
+			@y += 1 unless @moving
+			@moving = true
+		end
 	end
 	def left
-		@x -= 1 unless @x - 1 < 0 unless @moving
-		@moving = true unless @x - 1 < 0
+		unless @x - 1 < 0
+			@x -= 1 unless @moving
+			@moving = true
+		end
 	end
 	def right
-		@x += 1 unless @x + 1 > 7 unless @moving
-		@moving = true unless @x + 1 > 7
+		unless @y + 1 < 7
+			@x += 1 unless @moving
+			@moving = true
+		end
 	end
-	def get_piece(_x, _y)
-		$game.board.grid[_y][_x]
-	end
+	def get_piece(_x, _y); $game.board.grid[_y][_x]; end
 	def find_xy(piece_obj)
 		$game.board.grid.each do |y, row|
 			row.each_key do |x|
 				return [x, y] if $game.board.grid[y][x] == piece_obj
 			end
 		end
-		#raise "COULD NOT FIND XY COORDINATES FOR #{piece_obj}"
 	end
 	def select_piece(_x, _y)
 		unless @has_selected
 			$game.board.grid.each do |y, row|
 				row.each do |x, item|
-					if _x == x && _y == y && !$game.board.grid[y][x].nil?
-						if $game.board.grid[y][x].color == @player
-							break if @has_selected # idk it works
-							@selected_xy = [x, y]
-							@has_selected = true
-							@moving = true
-						end
+					if _x == x && _y == y && !$game.board.grid[y][x].nil? && $game.board.grid[y][x].color == @player
+						break if @has_selected # idk it works
+						@selected_xy = [x, y]
+						@has_selected = true
+						@moving = true
 					end
 				end
 			end
