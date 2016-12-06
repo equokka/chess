@@ -42,7 +42,7 @@ end
 
 Chess::DEFAULT_WIDTH  = 12*32 + 4*32
 Chess::DEFAULT_HEIGHT = 9*32  + 4*32
-Chess::DEFAULT_TITLE  = %q{CHESS 2}
+Chess::DEFAULT_TITLE  = "CHESS 2"
 Chess::DRAW_OFFSET    = [ # minimum 32,0
 	2*32, # X
 	1*32  # Y

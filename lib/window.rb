@@ -26,7 +26,7 @@ class Chess::Window < Gosu::Window
 	end
 	def update
 		@timeout = 0 if @timeout.nil?
-		self.caption = Chess::DEFAULT_TITLE + " - [FPS: #{Gosu::fps.to_s}] [#{$game.x},#{$game.y}] [#{Chess::DEFAULT_DELAY - @timeout}] [#{$game.selected_xy[0]},#{$game.selected_xy[1]}]"
+		self.caption = Chess::DEFAULT_TITLE + " - [FPS: #{Gosu::fps.to_s}] [#{Chess::DEFAULT_DELAY - @timeout}]"
 		
 		$game.input.queue :up,    Proc.new {$game.up}
 		$game.input.queue :down,  Proc.new {$game.down}
@@ -46,7 +46,7 @@ class Chess::Window < Gosu::Window
 			@timeout = 0
 			$game.moving = false
 		end
-		
+
 		$game.input.queue :f, Proc.new {
 			$game.reset unless $game.moving
 			$game.moving = true
