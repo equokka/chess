@@ -27,7 +27,7 @@ class Chess
 		# set which pieces the piece can kill
 		$game.board.grid[y_o][x_o].color == :white ? opposite = :black : opposite = :white
 
-		if [_x, _y] != $game.selected_xy || $game.board.grid[_y][_x].nil? || ( !$game.board.grid[_y][_x].nil? && $game.board.grid[_y][_x].color == opposite)
+		if [_x, _y] != $game.selected_xy || $game.board.grid[_y][_x].nil? || (!$game.board.grid[_y][_x].nil? && $game.board.grid[_y][_x].color == opposite)
 			case $game.board.grid[y_o][x_o].type
 			when :pawn
 				# decide which way is forward for the pawn based on color
@@ -58,60 +58,29 @@ class Chess
 					end
 				end #TODO ADD EN PASSANT
 			when :rook
-				possible = true # this variable is used to check if a path is unobstrtucted
-				if x_o == _x && y_o != _y # moving vertically
-					y_o < _y ? path = y_o.._y : _y..y_o
-					path = path.to_a
-					path.slice!(1..path.length - 1)
-					# iterate over every cell between piece and desired destination
-					# excluding the above mentioned
-					path.each do |y|
-						# make moving impossible if we find a single obstacle on the way
-						possible = false unless $game.board.grid[y][x_o].nil?
-					end
-				elsif y_o == _y && x_o != _x # moving horizontally
-					x_o < _x ? path = x_o.._x : _x..x_o
-					path = path.to_a
-					path.slice!(1..path.length - 1)
-					# iterate over every cell between piece and desired destination
-					# excluding the above mentioned
-					path.each do |x|
-						# make moving impossible if we find a single obstacle on the way
-						possible = false unless $game.board.grid[y_o][x].nil?
-					end
-				end
-				if x_o != _x
-					possible = false if y_o != _y
-				elsif y_o != _y
-					possible = false if x_o != _x
-				end
+				# TODO castling
+				
+				# check if the path is not diagonal
+				#  (_x != x_o && _y == y_o) || (_x == x_o && _y != y_o)
+				#         horizontal                  vertical
+				if (_x != x_o && _y == y_o) || (_x == x_o && _y != y_o)
+					_x != x_o && _y == y_o ? dir = :h : dir = :v
 
-				# this block runs if the path is clear
-				if possible
-					# check if there's a piece in the destination cell
-					if $game.board.grid[_y][_x].nil? # nothing there
-						do_thing.call
-					else # something there
-						# check if it's an enemy
-						if $game.board.grid[_y][_x].color == opposite
-							do_thing.call
-						end
-					end
-				end	#TODO ADD CASTLING
+					###
+					do_thing.call
+				end
 			when :knight
-				if true
-					
-				end
+				puts "[W] moved a piece with no movement restrictions!"
+				do_thing.call
 			when :bishop
-				if true
-					
-				end
+				puts "[W] moved a piece with no movement restrictions!"
+				do_thing.call
 			when :queen
-				if true
-					
-				end
+				puts "[W] moved a piece with no movement restrictions!"
+				do_thing.call
 			when :king
 				# TODO check if the destination will not place the king in check
+				# TODO castling (need to fix rook first)
 				# check if we're moving horizontally or vertically
 				if ((x_o == _x + 1 || x_o == _x - 1) && y_o == _y) || ((y_o == _y + 1 || y_o == _y - 1) && x_o == _x)
 					do_thing.call
