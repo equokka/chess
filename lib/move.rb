@@ -53,6 +53,7 @@ class Chess
 				if moved
 					if (opposite == :black && _y == 0) || (opposite == :white && _y == 7)
 						$game.board.grid[_y][_x].type = :queen #TODO create UI for selecting promoted piece
+						$game.board.grid[_y][_x].update_type # refresh sprite to reflect type change
 					elsif $game.board.grid[_y][_x].pawn_double_step # make sure pawn can't jump 2 cells if it's moved before
 						$game.board.grid[_y][_x].pawn_double_step = false
 					end

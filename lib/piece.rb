@@ -29,7 +29,6 @@ class Chess::Piece
 		end
 	end
 	def draw
-		update_type
 		#5 pixel offset (up)
 		coord = $game.find_xy self
 		@img.draw coord[0] * 32 + Chess::DRAW_OFFSET[0], ((coord[1] * 32) - 5) + Chess::DRAW_OFFSET[1], 2
