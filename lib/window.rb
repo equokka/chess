@@ -56,6 +56,8 @@ class Chess::Window < Gosu::Window
 			$game.moving = true
 		}
 
+		$debug_window.call
+
 		#do things here
 		@t_c_piece = TEXT("[#{t_x $game.x}#{$game.y+1}]")
 		@t_turn    = TEXT("Turn #{$game.turn}")
