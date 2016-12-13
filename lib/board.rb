@@ -53,7 +53,7 @@ class Chess::Board
 	def draw
 		@grid.each do |y, row|
 			row.each_key do |x|
-				@grid[y][x].draw unless @grid[y][x].nil?
+				@grid[y][x].draw x, y unless @grid[y][x].nil?
 			end
 		end
 	end

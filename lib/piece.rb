@@ -28,10 +28,9 @@ class Chess::Piece
 			@color == :black ? @img = Chess::TILESET[5] : @img = Chess::TILESET[11]
 		end
 	end
-	def draw
+	def draw(x,y)
 		#5 pixel offset (up)
-		coord = $game.find_xy self
-		@img.draw coord[0] * 32 + Chess::DRAW_OFFSET[0], ((coord[1] * 32) - 5) + Chess::DRAW_OFFSET[1], 2
+		@img.draw x * 32 + Chess::DRAW_OFFSET[0], ((y * 32) - 5) + Chess::DRAW_OFFSET[1], 2
 	end
 	def hovered?
 		x = $game.x
