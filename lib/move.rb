@@ -64,11 +64,22 @@ class Chess
 				# check if the path is not diagonal
 				#  (_x != x_o && _y == y_o) || (_x == x_o && _y != y_o)
 				#         horizontal                  vertical
-				if (_x != x_o && _y == y_o) || (_x == x_o && _y != y_o)
-					_x != x_o && _y == y_o ? dir = :h : dir = :v
-
-					###
-					do_thing.call
+				if _x != x_o && _y == y_o
+					row = $game.board.grid[y_o].to_a
+					row.each { |ary| ary.shift }
+					row.flatten!
+					if _x > x_o # headed right
+						path = row[x_o.._x]
+					elsif _x < x_o # headed left
+						path = row[_x..x_o] # reversed path
+					end
+					path.shift # remove first in array
+					path.pop   # remove last in array
+					if path.uniq.length == 1 && path.include?(nil) # check if path is clear
+						do_thing.call if $game.board.grid[_y][_x].nil? || $game.board.grid[_y][_x].color == opposite
+					end
+				elsif _x == x_o && _y != y_o
+					# todo
 				end
 			when :knight
 				puts "[W] moved a piece with no movement restrictions!"
