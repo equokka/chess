@@ -1,14 +1,32 @@
 # keyboard.rb
 
 class Chess::Input
-	attr_reader :events
+	attr_reader :events, :keyboard
 	def initialize
 		@events = {}
-		Chess::KEYBOARD.each { |key| @events[key[0]] = [] }
+		@keyboard = {
+			:up     => Gosu::KbUp,
+			:down   => Gosu::KbDown,
+			:left   => Gosu::KbLeft,
+			:right  => Gosu::KbRight,
+			:space  => Gosu::KbSpace,
+			:esc    => Gosu::KbEscape,
+			:q      => Gosu::KbQ
+		}
+		@keyboard.each { |key| @events[key[0]] = [] }
+	end
+	def [](key)
+		@keyboard[key]
+	end
+	def []=(key, gosu_key)
+		puts "added #{key}"
+		@keyboard[key] = gosu_key
+		@events[key] = []
+		puts @events.to_s
 	end
 	def update
 		@events.each do |key|
-			if Gosu.button_down? Chess::KEYBOARD[key[0]]
+			if Gosu.button_down? @keyboard[key[0]]
 				@events[key[0]].each do |event|
 					event.call
 					@events[key[0]].shift

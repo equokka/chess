@@ -48,16 +48,4 @@ Chess::DRAW_OFFSET    = [ # minimum 32,0
 	1*32  # Y
 ]
 Chess::TILESET        = TILES("tileset.png")
-Chess::KEYBOARD       = {
-	:up     => Gosu::KbUp,
-	:down   => Gosu::KbDown,
-	:left   => Gosu::KbLeft,
-	:right  => Gosu::KbRight,
-	:space  => Gosu::KbSpace,
-	:esc    => Gosu::KbEscape,
-	:q      => Gosu::KbQ,
-	:e      => Gosu::KbE,
-	:f      => Gosu::KbF,
-	:period => Gosu::KbPeriod
-}
 Chess::DEFAULT_DELAY = 10

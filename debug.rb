@@ -8,6 +8,10 @@ $game.board.grid[3][3] = Chess::Piece.new :rook, :white
 $game.board.grid[4][4] = Chess::Piece.new :king, :white
 $game.board.grid[0][0] = Chess::Piece.new :king, :black
 
+$game.input[:period] = Gosu::KbPeriod
+$game.input[:f]      = Gosu::KbF
+$game.input[:e]      = Gosu::KbE
+
 # call this every Chess::Window#update
 $debug_window = Proc.new {
 
@@ -31,5 +35,17 @@ $debug_window = Proc.new {
 				end
 			end
 		end
+	}
+
+	#reset board
+	$game.input.queue :f, Proc.new {
+		$game.reset unless $game.moving
+		$game.moving = true
+	}
+
+	#print_board
+	$game.input.queue :e, Proc.new {
+		print_board unless $game.moving
+		$game.moving = true
 	}
 }
