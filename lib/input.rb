@@ -21,7 +21,6 @@ class Chess::Input
 	def []=(key, gosu_key)
 		@keyboard[key] = gosu_key
 		@events[key] = []
-		puts @events.to_s
 	end
 	def update
 		@events.each do |key|
