@@ -73,13 +73,26 @@ class Chess
 					elsif _x < x_o # headed left
 						path = row[_x..x_o] # reversed path
 					end
-					path.shift # remove first in array
-					path.pop   # remove last in array
+					path.shift if path.length > 1 # remove first in array
+					path.pop # remove last in array
 					if path.uniq.length == 1 && path.include?(nil) # check if path is clear
 						do_thing.call if $game.board.grid[_y][_x].nil? || $game.board.grid[_y][_x].color == opposite
 					end
 				elsif _x == x_o && _y != y_o
-					# todo
+					path = []
+					if _y > y_o # headed down
+						collumn = (y_o.._y).to_a
+					elsif _y < y_o # headed up
+						collumn = (_y..y_o).to_a
+					end
+					collumn.each do |i|
+						path << $game.board.grid[i][x_o]
+					end
+					path.shift if path.length > 1  # remove first in array
+					path.pop   # remove last in array
+					if path.uniq.length == 1 && path.include?(nil) # check if path is clear
+						do_thing.call if $game.board.grid[_y][_x].nil? || $game.board.grid[_y][_x].color == opposite
+					end
 				end
 			when :knight
 				puts "[W] moved a piece with no movement restrictions!"
