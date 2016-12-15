@@ -7,7 +7,7 @@ require_relative 'lib/board'
 require_relative 'lib/move'
 require_relative 'lib/const'
 require_relative 'lib/window'
-require_relative 'lib/keyboard'
+require_relative 'lib/input'
 
 $game = Chess.new
 
