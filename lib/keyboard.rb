@@ -19,7 +19,6 @@ class Chess::Input
 		@keyboard[key]
 	end
 	def []=(key, gosu_key)
-		puts "added #{key}"
 		@keyboard[key] = gosu_key
 		@events[key] = []
 		puts @events.to_s
