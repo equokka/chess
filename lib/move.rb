@@ -27,7 +27,11 @@ class Chess
 		# set which pieces the piece can kill
 		$game.board.grid[y_o][x_o].color == :white ? opposite = :black : opposite = :white
 
-		if [_x, _y] != $game.selected_xy || $game.board.grid[_y][_x].nil? || (!$game.board.grid[_y][_x].nil? && $game.board.grid[_y][_x].color == opposite)
+		if [_x, _y] != $game.selected_xy ||
+		$game.board.grid[_y][_x].nil? ||
+		(!$game.board.grid[_y][_x].nil? &&
+		$game.board.grid[_y][_x].color == opposite)
+
 			case $game.board.grid[y_o][x_o].type
 			when :pawn
 				# decide which way is forward for the pawn based on color
@@ -35,7 +39,10 @@ class Chess
 				if x_o != _x # check if we're trying to move diagonally
 					# check if you can kill
 					# (i have no clue why it wouldn't work with +forward but whatever)
-					if !$game.board.grid[_y][_x].nil? && $game.board.grid[_y][_x].color == opposite && _y == y_o -forward && (_x == x_o + 1 || _x == x_o - 1)
+					if !$game.board.grid[_y][_x].nil? &&
+					$game.board.grid[_y][_x].color == opposite &&
+					_y == y_o -forward &&
+					(_x == x_o + 1 || _x == x_o - 1)
 						do_thing.call
 					end
 				else # we're not moving diagonally
@@ -70,30 +77,41 @@ class Chess
 					row.flatten!
 					if _x > x_o # headed right
 						path = row[x_o.._x]
+						path.shift
+						path.pop if path.length > 2
 					elsif _x < x_o # headed left
 						path = row[_x..x_o] # reversed path
+						path.shift if path.length > 2
+						path.pop
 					end
-					path.shift if path.length > 1 # remove first in array
-					path.pop # remove last in array
+					puts path.to_s
 					if path.uniq.length == 1 && path.include?(nil) # check if path is clear
 						do_thing.call if $game.board.grid[_y][_x].nil? || $game.board.grid[_y][_x].color == opposite
 					end
 				elsif _x == x_o && _y != y_o
 					path = []
 					if _y > y_o # headed down
-						collumn = (y_o.._y).to_a
+						collumn = (y_o.._y+1).to_a
 					elsif _y < y_o # headed up
-						collumn = (_y..y_o).to_a
+						collumn = (_y..y_o+1).to_a
 					end
-					collumn.each do |i|
-						path << $game.board.grid[i][x_o]
+					collumn.each { |i| path << $game.board.grid[i][x_o] }
+					if _y > y_o # headed down
+						path.shift if path.length > 2
+						path.pop
+					elsif _y < y_o # headed up
+						path.shift
+						path.pop if path.length > 2
 					end
-					path.shift if path.length > 1  # remove first in array
-					path.pop   # remove last in array
+					puts path.to_s
+					path.shift # remove first in array
+					path.pop if path.length > 2 # remove last in array
 					if path.uniq.length == 1 && path.include?(nil) # check if path is clear
 						do_thing.call if $game.board.grid[_y][_x].nil? || $game.board.grid[_y][_x].color == opposite
 					end
 				end
+				puts path.to_s
+				puts
 			when :knight
 				puts "[W] moved a piece with no movement restrictions!"
 				do_thing.call

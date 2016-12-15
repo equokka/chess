@@ -37,9 +37,9 @@ $debug_window = Proc.new {
 		end
 	}
 
-	#reset board
+	#set player to :white
 	$game.input.queue :f, Proc.new {
-		$game.reset unless $game.moving
+		$game.player = :white unless $game.moving
 		$game.moving = true
 	}
 
