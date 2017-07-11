@@ -1,6 +1,10 @@
 README
 
 controls:
-arrow keys - move
-space      - select
+arrow keys - move cursor
+space      - select, confirm
 q          - deselect
+(debug)
+.          - command input (game window freezes while active, type in "exit" to go back)
+e          - sets playing color to white
+f          - prints board to console
